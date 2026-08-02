@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9.2] - 2026-07-24
+
+### Added
+
+- **Timer themes support percentage sensors** ([#186](https://github.com/djdevil/AlertTicker-Card/discussions/186)) — `countdown`, `hourglass`, `timer_pulse`, and `timer_ring` themes now work with any sensor whose `unit_of_measurement` is `%`. The progress bar reflects the sensor value directly (0 % = empty, 100 % = full) and the time display shows the current percentage (e.g. `75%`) instead of `MM:SS`. No configuration changes needed — just point the alert's `entity` at any `%` sensor and pick a timer theme.
+- **`dismiss` action — permanently acknowledge an alert until its entity fires again** ([#187](https://github.com/djdevil/AlertTicker-Card/discussions/187)) — new action type `dismiss` available in any tap/hold/double-tap slot. When triggered, the alert is hidden immediately and stays hidden until the entity's state changes again (i.e. the trigger fires a new event). On next state change the alert reappears automatically — no manual reset needed. Dismiss state persists across page reloads via localStorage. Useful for one-shot events like earthquake sensors, doorbell triggers, or any alert where the value stays unchanged after the event. Configure via `tap_action: {action: dismiss}` or any other action slot; also selectable in the visual editor.
+
+---
+
 ## [1.3.9.1] - 2026-07-24
 
 ### Fixed

@@ -1,5 +1,5 @@
 ﻿/**
- * AlertTicker Card v1.3.9.1
+ * AlertTicker Card v1.3.9.2
  * A Home Assistant custom Lovelace card to display alerts based on entity states.
  * Supports 50 visual themes with per-alert theme assignment, priority ordering,
  * fold animation cycling, snooze, numeric conditions, attribute triggers,
@@ -27,7 +27,7 @@ const css = LitElement.prototype.css ?? ((strings, ...values) => {
 // ---------------------------------------------------------------------------
 // Card version — declared early so getConfigElement() can reference it
 // ---------------------------------------------------------------------------
-const CARD_VERSION = "1.3.9.1";
+const CARD_VERSION = "1.3.9.2";
 
 // ---------------------------------------------------------------------------
 // Google Cast compatibility (#171)
@@ -1667,7 +1667,8 @@ class AlertTickerCard extends LitElement {
     this._initialLoadDone = false; // prevents sound/history on first compute after init
     this._snoozeMenuOpen = null;
     this._snoozedCount = 0;
-    this._snoozed = new Map(); // snoozeKey → expiry timestamp
+    this._snoozed    = new Map(); // snoozeKey → expiry timestamp
+    this._dismissed  = new Map(); // snoozeKey → last_changed when dismissed
     this._persistentLatched = new Set(); // snoozeKey → latched persistent alert
     this._expandedGroups = new Set(); // groupKey → expanded (shows individual slides)
     this._historyOpen = false;
@@ -2073,6 +2074,7 @@ class AlertTickerCard extends LitElement {
           }
         }
         if (this._isSnoozed(alert)) { snoozedCount++; return false; }
+        if (this._isDismissed(alert)) return false;
       }
       return true;
     });
@@ -2848,6 +2850,16 @@ class AlertTickerCard extends LitElement {
       return { progress, remainingStr, isActive: true, remainingSec };
     }
 
+    // Percentage sensor — unit_of_measurement: % with numeric state (e.g. battery, progress bars)
+    if (es.attributes.unit_of_measurement === "%") {
+      const pct = parseFloat(es.state);
+      if (isNaN(pct) || ["unavailable", "unknown", "none", ""].includes(es.state)) {
+        return { progress: -1, remainingStr: "--", isActive: false };
+      }
+      const clamped = Math.max(0, Math.min(100, pct));
+      return { progress: clamped / 100, remainingStr: `${Math.round(clamped)}%`, isActive: clamped > 0 };
+    }
+
     const isActive = es.state === "active";
     if (!isActive) return { progress: 0, remainingStr: "00:00", isActive: false };
     const finishesAt = es.attributes.finishes_at;
@@ -3221,6 +3233,51 @@ class AlertTickerCard extends LitElement {
     try {
       localStorage.setItem("atc-snooze", JSON.stringify(Object.fromEntries(this._snoozed)));
     } catch (_) {}
+  }
+
+  // ---- Dismiss helpers -------------------------------------------------------
+
+  /** Load dismiss state from localStorage */
+  _loadDismissed() {
+    try {
+      const raw = localStorage.getItem("atc-dismissed");
+      if (!raw) return;
+      this._dismissed = new Map(Object.entries(JSON.parse(raw)));
+    } catch (_) { this._dismissed = new Map(); }
+  }
+
+  /** Persist dismiss state to localStorage */
+  _saveDismissed() {
+    try {
+      localStorage.setItem("atc-dismissed", JSON.stringify(Object.fromEntries(this._dismissed)));
+    } catch (_) {}
+  }
+
+  /** Returns true if the alert was dismissed and its entity hasn't changed since.
+   *  Auto-clears stale entries when the entity's last_changed timestamp advances. */
+  _isDismissed(alert) {
+    if (!alert.entity) return false;
+    const es = this._hass && this._hass.states[alert.entity];
+    if (!es) return false;
+    const key = this._snoozeKey(alert);
+    const storedLsc = this._dismissed.get(key);
+    if (!storedLsc) return false;
+    if (storedLsc === es.last_changed) return true;
+    // Entity state changed since dismissal — auto-reset so alert reappears
+    this._dismissed.delete(key);
+    this._saveDismissed();
+    return false;
+  }
+
+  /** Dismiss the alert until its entity fires a new state_changed event */
+  _dismissAlert(alert) {
+    if (!alert || !alert.entity) return;
+    const es = this._hass && this._hass.states[alert.entity];
+    if (!es) return;
+    this._dismissed.set(this._snoozeKey(alert), es.last_changed);
+    this._saveDismissed();
+    this._lastSignature = "";
+    this._computeActiveAlerts();
   }
 
   // ---- Persistent alarm helpers ---------------------------------------------
@@ -3842,6 +3899,11 @@ class AlertTickerCard extends LitElement {
         }));
         break;
       }
+      case "dismiss": {
+        const target = this._activeAlerts && this._activeAlerts[this._currentIndex];
+        if (target) this._dismissAlert(target);
+        break;
+      }
     }
   }
 
@@ -4056,6 +4118,7 @@ class AlertTickerCard extends LitElement {
       _ATC_OVERLAY.register(this._cardId, this._config.alerts || [], this._config, this._lang, this);
     }
     this._loadSnooze();
+    this._loadDismissed();
     this._loadPersistent();
     this._loadHistory();
     this._startCycleTimer();

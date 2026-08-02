@@ -1,5 +1,5 @@
 /**
- * AlertTicker Card Editor v1.3.9.1
+ * AlertTicker Card Editor v1.3.9.2
  * Visual editor for the AlertTicker Card custom Lovelace component.
  */
 
@@ -10,7 +10,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 // Must match the version in alert-ticker-card.js
-const CARD_VERSION = "1.3.9.1";
+const CARD_VERSION = "1.3.9.2";
 
 // ---------------------------------------------------------------------------
 // Theme metadata — mirrors alert-ticker-card.js
@@ -1105,6 +1105,7 @@ const ET = {
     action_navigate_path: "Percorso (es. /lovelace/home)",
     action_url_path: "URL da aprire",
     action_assist: "Assistente vocale",
+    action_dismiss: "Chiudi definitivamente",
     action_pipeline_id: "Pipeline (vuoto = predefinita)",
     action_pipeline_id_help: "ID del pipeline vocale da usare. Lascia vuoto per usare quello predefinito.",
     action_start_listening: "Avvia ascolto",
@@ -1437,6 +1438,7 @@ const ET = {
     action_navigate_path: "Path (e.g. /lovelace/home)",
     action_url_path: "URL to open",
     action_assist: "Assist",
+    action_dismiss: "Dismiss",
     action_pipeline_id: "Pipeline (empty = preferred)",
     action_pipeline_id_help: "Voice pipeline ID to use. Leave empty to use the preferred pipeline.",
     action_start_listening: "Start listening",
@@ -1769,6 +1771,7 @@ const ET = {
     action_navigate_path: "Chemin (ex. /lovelace/home)",
     action_url_path: "URL à ouvrir",
     action_assist: "Assistant vocal",
+    action_dismiss: "Ignorer définitivement",
     action_pipeline_id: "Pipeline (vide = préféré)",
     action_pipeline_id_help: "ID du pipeline vocal à utiliser. Laisser vide pour utiliser le pipeline préféré.",
     action_start_listening: "Démarrer l'écoute",
@@ -2101,6 +2104,7 @@ const ET = {
     action_navigate_path: "Pfad (z.B. /lovelace/home)",
     action_url_path: "Zu öffnende URL",
     action_assist: "Assistent",
+    action_dismiss: "Dauerhaft schließen",
     action_pipeline_id: "Pipeline (leer = bevorzugt)",
     action_pipeline_id_help: "ID der Sprach-Pipeline. Leer lassen für die bevorzugte Pipeline.",
     action_start_listening: "Zuhören starten",
@@ -2433,6 +2437,7 @@ const ET = {
     action_navigate_path: "Pad (bijv. /lovelace/home)",
     action_url_path: "Te openen URL",
     action_assist: "Assistent",
+    action_dismiss: "Definitief sluiten",
     action_pipeline_id: "Pipeline (leeg = voorkeur)",
     action_pipeline_id_help: "ID van de spraakpipeline. Leeg laten voor de standaard pipeline.",
     action_start_listening: "Begin met luisteren",
@@ -2765,6 +2770,7 @@ const ET = {
     action_navigate_path: "Đường dẫn (vd. /lovelace/home)",
     action_url_path: "URL cần mở",
     action_assist: "Trợ lý giọng nói",
+    action_dismiss: "Bỏ qua vĩnh viễn",
     action_pipeline_id: "Pipeline (trống = mặc định)",
     action_pipeline_id_help: "ID pipeline giọng nói. Để trống để dùng pipeline mặc định.",
     action_start_listening: "Bắt đầu nghe",
@@ -3097,6 +3103,7 @@ const ET = {
     action_navigate_path: "Путь (например /lovelace/home)",
     action_url_path: "URL для открытия",
     action_assist: "Голосовой помощник",
+    action_dismiss: "Закрыть навсегда",
     action_pipeline_id: "Pipeline (пусто = по умолчанию)",
     action_pipeline_id_help: "ID голосового pipeline. Оставьте пустым для использования pipeline по умолчанию.",
     action_start_listening: "Начать прослушивание",
@@ -3425,6 +3432,7 @@ const ET = {
     action_navigate_path: "Sti (f.eks. /lovelace/home)",
     action_url_path: "URL der skal åbnes",
     action_assist: "Assistent",
+    action_dismiss: "Afvis permanent",
     action_pipeline_id: "Pipeline (tom = foretrukket)",
     action_pipeline_id_help: "ID på tale-pipeline. Lad feltet være tomt for at bruge den foretrukne pipeline.",
     action_start_listening: "Start lytning",
@@ -3761,6 +3769,7 @@ const ET = {
     action_navigate_path: "Cesta (např. /lovelace/home)",
     action_url_path: "URL k otevření",
     action_assist: "Hlasový asistent",
+    action_dismiss: "Trvale zavřít",
     action_pipeline_id: "Pipeline (prázdné = výchozí)",
     action_pipeline_id_help: "ID hlasového pipeline. Nechte prázdné pro použití výchozího pipeline.",
     action_start_listening: "Začít naslouchat",
@@ -4097,6 +4106,7 @@ const ET = {
     action_navigate_path: "Caminho (ex. /lovelace/home)",
     action_url_path: "URL a abrir",
     action_assist: "Assistente de voz",
+    action_dismiss: "Dispensar",
     action_pipeline_id: "Pipeline (vazio = padrão)",
     action_pipeline_id_help: "ID do pipeline de voz. Deixe vazio para usar o pipeline padrão.",
     action_start_listening: "Iniciar escuta",
@@ -4429,6 +4439,7 @@ const ET = {
     action_navigate_path: "Ruta (ej. /lovelace/home)",
     action_url_path: "URL a abrir",
     action_assist: "Asistente de voz",
+    action_dismiss: "Descartar",
     action_pipeline_id: "Pipeline (vacío = predeterminado)",
     action_pipeline_id_help: "ID del pipeline de voz. Dejar vacío para usar el predeterminado.",
     action_start_listening: "Iniciar escucha",
@@ -4761,6 +4772,7 @@ const ET = {
     action_navigate_path: "Yol (örn. /lovelace/home)",
     action_url_path: "Açılacak URL",
     action_assist: "Sesli asistan",
+    action_dismiss: "Kalıcı olarak kapat",
     action_pipeline_id: "Pipeline (boş = tercih edilen)",
     action_pipeline_id_help: "Kullanılacak sesli pipeline ID'si. Tercih edilen pipeline için boş bırakın.",
     action_start_listening: "Dinlemeyi başlat",
@@ -7570,7 +7582,7 @@ class AlertTickerCardEditor extends LitElement {
         <select class="native-select"
           @change="${(e) => this._setActionConfig(index, key, "action", e.target.value)}"
         >
-          ${["none","call-service","navigate","more-info","url","assist"].map((t) => html`
+          ${["none","call-service","navigate","more-info","url","assist","dismiss"].map((t) => html`
             <option value="${t}" ?selected="${type === t}">
               ${this._t("action_" + t.replace("-","_")) || t}
             </option>
