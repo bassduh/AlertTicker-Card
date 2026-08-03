@@ -1,5 +1,5 @@
 /**
- * AlertTicker Card Editor v1.3.9.3
+ * AlertTicker Card Editor v1.3.9.4
  * Visual editor for the AlertTicker Card custom Lovelace component.
  */
 
@@ -10,7 +10,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 // Must match the version in alert-ticker-card.js
-const CARD_VERSION = "1.3.9.3";
+const CARD_VERSION = "1.3.9.4";
 
 // ---------------------------------------------------------------------------
 // Theme metadata — mirrors alert-ticker-card.js
@@ -5309,7 +5309,7 @@ class AlertTickerCardEditor extends LitElement {
       ? [TIMER_GROUP]
       : onlyOk
         ? [{ cat: "ok", emoji: "✅" }]
-        : GROUPS;
+        : [...GROUPS, TIMER_GROUP];
 
     return html`
       <div class="native-select-wrap">
@@ -6102,7 +6102,7 @@ class AlertTickerCardEditor extends LitElement {
                   <div class="theme-priority-theme">
                     ${this._renderThemeSelect(
                       "alert_theme",
-                      alert.theme || (this._isTimerLike(alert.entity) ? "countdown" : "emergency"),
+                      alert.theme || (this._isTimerLike(alert.entity) || this._hass?.states[alert.entity]?.attributes?.unit_of_measurement === "%" ? "countdown" : "emergency"),
                       (v) => this._alertThemeChanged(v, index),
                       false,
                       this._isTimerLike(alert.entity) || (alert.entity_filter || "").startsWith("timer.")
@@ -7309,6 +7309,7 @@ class AlertTickerCardEditor extends LitElement {
     const changes = { entity: value };
     const isTimer     = value && value.startsWith("timer.");
     const isTimestamp = value && !isTimer && this._hass?.states[value]?.attributes?.device_class === "timestamp";
+    const isPct       = value && !isTimer && !isTimestamp && this._hass?.states[value]?.attributes?.unit_of_measurement === "%";
     const wasTimerLike = this._isTimerLike(alert.entity);
 
     // timer.* entity → auto-set state "active" and switch to first timer theme
@@ -7340,8 +7341,17 @@ class AlertTickerCardEditor extends LitElement {
       }
     }
 
+    // % sensor (battery, progress…) — auto-switch to countdown theme, no state conditions needed
+    if (isPct) {
+      const prevThemeCat = (THEME_META[alert.theme] || {}).category;
+      if (prevThemeCat !== "timer") {
+        changes.theme = "countdown";
+        changes.icon = THEME_META.countdown.icon;
+      }
+    }
+
     // Leaving a timer-like entity → reset theme to emergency if it was a timer theme
-    if (!isTimer && !isTimestamp && wasTimerLike) {
+    if (!isTimer && !isTimestamp && !isPct && wasTimerLike) {
       const prevThemeCat = (THEME_META[alert.theme] || {}).category;
       if (prevThemeCat === "timer") {
         changes.theme = "emergency";

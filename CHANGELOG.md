@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9.4] - 2026-08-03
+
+### Fixed
+
+- **Timer themes not visible in the visual editor for `%` sensors** ([#186](https://github.com/djdevil/AlertTicker-Card/discussions/186)) — The `_renderThemeSelect` helper built the full-theme dropdown from a `GROUPS` array that intentionally excluded the `timer` category (which was only injected when `timerOnly = true`, i.e. for `timer.*` entities). For any other entity type — including `%` sensors — the four timer themes (`countdown`, `hourglass`, `timer_pulse`, `timer_ring`) were simply absent from the dropdown. Fixed by always appending `TIMER_GROUP` to the full-theme list, making timer themes selectable for any entity. Additionally, selecting a `%` sensor in the editor now auto-suggests `countdown` as the default theme (matching the existing auto-suggestion behavior for `timer.*` and `device_class: timestamp` entities).
+
+---
+
 ## [1.3.9.3] - 2026-08-03
 
 ### Added
