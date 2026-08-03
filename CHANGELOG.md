@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9.3] - 2026-08-03
+
+### Added
+
+- **`show_counter` — toggle the alert counter badge** ([#188](https://github.com/djdevil/AlertTicker-Card/discussions/188)) — new card-level option to show or hide the `1 / 3` pagination badge that appears when multiple alerts are active. Set `show_counter: false` to hide it; omit the key (default) to keep the current behavior. Available in the visual editor under the same section as the snooze and history toggles.
+
+### Fixed
+
+- **Alerts without a `state` condition never show** ([#186](https://github.com/djdevil/AlertTicker-Card/discussions/186)) — In the normal (non-`on_change`) evaluation path, `_matchesState` was called unconditionally even when no `state` was configured. With no state configured, `trigger` resolved to `"undefined"` — never matching any real entity state — so the alert silently stayed hidden. The `on_change` path already had a null/empty guard for this case (`if (alert.state != null && alert.state !== "")`); the normal path now applies the same guard: when `alert.state` is null, undefined, or empty, the primary state check is skipped and the alert shows for any entity state. Affects all timer-theme alerts (e.g. `countdown` on a `%` sensor) and any alert that omits a `state` field.
+- **Tap actions unreliable on mobile when no hold action is configured** ([#187](https://github.com/djdevil/AlertTicker-Card/discussions/187)) — `e.preventDefault()` on `pointerdown` was only called when a `hold_action` was configured. With tap-only interactions (e.g. `tap_action: {action: dismiss}`), the browser's scroll-detection could misinterpret a short tap as a scroll gesture and replace `pointerup` with `pointercancel`, silently dropping the action. Fixed by moving `e.preventDefault()` outside the hold-action guard so it applies to all touch interactions on interactive cards.
+
+---
+
 ## [1.3.9.2] - 2026-07-24
 
 ### Added

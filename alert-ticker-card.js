@@ -1,5 +1,5 @@
 ﻿/**
- * AlertTicker Card v1.3.9.2
+ * AlertTicker Card v1.3.9.3
  * A Home Assistant custom Lovelace card to display alerts based on entity states.
  * Supports 50 visual themes with per-alert theme assignment, priority ordering,
  * fold animation cycling, snooze, numeric conditions, attribute triggers,
@@ -27,7 +27,7 @@ const css = LitElement.prototype.css ?? ((strings, ...values) => {
 // ---------------------------------------------------------------------------
 // Card version — declared early so getConfigElement() can reference it
 // ---------------------------------------------------------------------------
-const CARD_VERSION = "1.3.9.2";
+const CARD_VERSION = "1.3.9.3";
 
 // ---------------------------------------------------------------------------
 // Google Cast compatibility (#171)
@@ -1972,7 +1972,10 @@ class AlertTickerCard extends LitElement {
           const stateValue = (alert.attribute != null && alert.attribute !== "")
             ? String(this._resolveAttrPath(entityState.attributes, alert.attribute) ?? "")
             : entityState.state;
-          const primaryOk = this._matchesState(stateValue, alert);
+          // No state condition = always match (mirrors on_change guard at line 1948)
+          const primaryOk = (alert.state == null || alert.state === "")
+            ? true
+            : this._matchesState(stateValue, alert);
           const normalConds = _normConds(alert.conditions);
           if (normalConds.length > 0) {
             const logic = alert.conditions_logic || "and";
@@ -3917,11 +3920,12 @@ class AlertTickerCard extends LitElement {
     // Capture pointer on the listener element (currentTarget = inner div) so pointerup
     // fires on the same element, not on the shadow host which would miss our handler.
     try { e.currentTarget.setPointerCapture(e.pointerId); } catch (_) {}
+    // On touch, prevent scroll-detection from firing pointercancel and stealing the
+    // gesture. Previously only guarded by holdCfg, but tap-only interactions (e.g.
+    // action: dismiss) are equally vulnerable — the browser can misread a short tap
+    // as a scroll start and replace pointerup with pointercancel (#187).
+    if (e.pointerType === 'touch') e.preventDefault();
     if (holdCfg && holdCfg.action && holdCfg.action !== "none") {
-      // On touch, prevent the browser scroll-detection from firing pointercancel
-      // before our 500 ms hold threshold — without this the gesture is silently
-      // hijacked on mobile and the hold never fires.
-      if (e.pointerType === 'touch') e.preventDefault();
       const _isTouch = e.pointerType === 'touch';
       this._holdTimer = setTimeout(() => {
         this._holdFired = true;
@@ -4322,6 +4326,7 @@ class AlertTickerCard extends LitElement {
   /** Returns a "2/3" counter badge when there are multiple alerts, else empty */
   _renderCounter() {
     if (this._activeAlerts.length <= 1) return html``;
+    if (this._config?.show_counter === false) return html``;
     return html`
       <div class="alert-counter">
         ${this._currentIndex + 1}<span class="counter-sep">/</span>${this._activeAlerts.length}
@@ -4332,6 +4337,7 @@ class AlertTickerCard extends LitElement {
   /** Counter overlay for large_buttons mode — absolutely positioned above the button stack */
   _renderCounterOverlay() {
     if (this._activeAlerts.length <= 1) return html``;
+    if (this._config?.show_counter === false) return html``;
     return html`
       <div class="alert-counter-overlay">
         ${this._currentIndex + 1}<span class="counter-sep">/</span>${this._activeAlerts.length}

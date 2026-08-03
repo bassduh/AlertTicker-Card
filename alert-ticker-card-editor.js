@@ -1,5 +1,5 @@
 /**
- * AlertTicker Card Editor v1.3.9.2
+ * AlertTicker Card Editor v1.3.9.3
  * Visual editor for the AlertTicker Card custom Lovelace component.
  */
 
@@ -10,7 +10,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 // Must match the version in alert-ticker-card.js
-const CARD_VERSION = "1.3.9.2";
+const CARD_VERSION = "1.3.9.3";
 
 // ---------------------------------------------------------------------------
 // Theme metadata — mirrors alert-ticker-card.js
@@ -891,6 +891,7 @@ const ET = {
     show_snooze_bar: "Mostra barra di riattivazione snooze 💤",
     show_snooze_button: "Mostra pulsante snooze 💤",
     show_history_button: "Mostra pulsante cronologia 📋",
+    show_counter: "Mostra contatore avvisi (1/3)",
     secondary_value_align: "Posizione valore secondario",
     secondary_value_align_below: "Sotto il titolo (predefinito)",
     secondary_value_align_right: "A destra del titolo",
@@ -1224,6 +1225,7 @@ const ET = {
     show_snooze_bar: "Show snooze reactivation bar 💤",
     show_snooze_button: "Show snooze button 💤",
     show_history_button: "Show history button 📋",
+    show_counter: "Show alert counter (1/3)",
     secondary_value_align: "Secondary value position",
     secondary_value_align_below: "Below title (default)",
     secondary_value_align_right: "Right of title",
@@ -1557,6 +1559,7 @@ const ET = {
     show_snooze_bar: "Afficher la barre de réactivation snooze 💤",
     show_snooze_button: "Afficher le bouton snooze 💤",
     show_history_button: "Afficher le bouton historique 📋",
+    show_counter: "Afficher le compteur d'alertes (1/3)",
     secondary_value_align: "Position de la valeur secondaire",
     secondary_value_align_below: "Sous le titre (défaut)",
     secondary_value_align_right: "À droite du titre",
@@ -1890,6 +1893,7 @@ const ET = {
     show_snooze_bar: "Schlummern-Reaktivierungsleiste anzeigen 💤",
     show_snooze_button: "Schlummern-Schaltfläche anzeigen 💤",
     show_history_button: "Verlauf-Schaltfläche anzeigen 📋",
+    show_counter: "Alarmzähler anzeigen (1/3)",
     secondary_value_align: "Position des Sekundärwerts",
     secondary_value_align_below: "Unter dem Titel (Standard)",
     secondary_value_align_right: "Rechts vom Titel",
@@ -2223,6 +2227,7 @@ const ET = {
     show_snooze_bar: "Sluimer-reactiveringsbalk weergeven 💤",
     show_snooze_button: "Sluimerknop weergeven 💤",
     show_history_button: "Geschiedenisknop weergeven 📋",
+    show_counter: "Meldingsteller weergeven (1/3)",
     secondary_value_align: "Positie secundaire waarde",
     secondary_value_align_below: "Onder de titel (standaard)",
     secondary_value_align_right: "Rechts van de titel",
@@ -2556,6 +2561,7 @@ const ET = {
     show_snooze_bar: "Hiển thị thanh kích hoạt lại tạm hoãn 💤",
     show_snooze_button: "Hiển thị nút tạm hoãn 💤",
     show_history_button: "Hiển thị nút lịch sử 📋",
+    show_counter: "Hiển thị bộ đếm cảnh báo (1/3)",
     secondary_value_align: "Vị trí giá trị phụ",
     secondary_value_align_below: "Dưới tiêu đề (mặc định)",
     secondary_value_align_right: "Bên phải tiêu đề",
@@ -2889,6 +2895,7 @@ const ET = {
     show_snooze_bar: "Показывать полосу восстановления отложенных 💤",
     show_snooze_button: "Показывать кнопку отложить 💤",
     show_history_button: "Показывать кнопку истории 📋",
+    show_counter: "Показывать счётчик уведомлений (1/3)",
     secondary_value_align: "Положение дополнительного значения",
     secondary_value_align_below: "Под заголовком (по умолчанию)",
     secondary_value_align_right: "Справа от заголовка",
@@ -3218,6 +3225,7 @@ const ET = {
     show_snooze_bar: "Vis reaktiveringsbar for slumre 💤",
     show_snooze_button: "Vis slumreknap 💤",
     show_history_button: "Vis historikknap 📋",
+    show_counter: "Vis advarselstæller (1/3)",
     secondary_value_align: "Placering af sekundær værdi",
     secondary_value_align_below: "Under titel (standard)",
     secondary_value_align_right: "Til højre for titel",
@@ -3555,6 +3563,7 @@ const ET = {
     show_snooze_bar: "Zobrazit nástroj pro reaktivaci odložených varování 💤",
     show_snooze_button: "Zobrazit tlačítko odložit 💤",
     show_history_button: "Zobrazit tlačítko historie 📋",
+    show_counter: "Zobrazit počítadlo upozornění (1/3)",
     secondary_value_align: "Pozice sekundární hodnoty",
     secondary_value_align_below: "Pod nadpisem (výchozí)",
     secondary_value_align_right: "Napravo od nadpisu",
@@ -3892,6 +3901,7 @@ const ET = {
     show_snooze_bar: "Mostrar barra de reativação do silenciar 💤",
     show_snooze_button: "Mostrar botão de silenciar 💤",
     show_history_button: "Mostrar botão de histórico 📋",
+    show_counter: "Mostrar contador de alertas (1/3)",
     secondary_value_align: "Posição do valor secundário",
     secondary_value_align_below: "Abaixo do título (padrão)",
     secondary_value_align_right: "À direita do título",
@@ -4225,6 +4235,7 @@ const ET = {
     show_snooze_bar: "Mostrar barra de reactivación de posponer 💤",
     show_snooze_button: "Mostrar botón de posponer 💤",
     show_history_button: "Mostrar botón de historial 📋",
+    show_counter: "Mostrar contador de alertas (1/3)",
     secondary_value_align: "Posición del valor secundario",
     secondary_value_align_below: "Debajo del título (predeterminado)",
     secondary_value_align_right: "A la derecha del título",
@@ -4558,6 +4569,7 @@ const ET = {
     show_snooze_bar: "Erteleme yeniden etkinleştirme çubuğunu göster 💤",
     show_snooze_button: "Erteleme düğmesini göster 💤",
     show_history_button: "Geçmiş düğmesini göster 📋",
+    show_counter: "Uyarı sayacını göster (1/3)",
     secondary_value_align: "İkincil değer konumu",
     secondary_value_align_below: "Başlığın altında (varsayılan)",
     secondary_value_align_right: "Başlığın sağında",
@@ -5539,6 +5551,15 @@ class AlertTickerCardEditor extends LitElement {
           <ha-switch
             .checked="${cfg.show_history_button !== false}"
             @change="${(e) => this._fireConfig({ ...this._config, show_history_button: e.target.checked ? undefined : false })}"
+          ></ha-switch>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-row-inline">
+          <span>${this._t("show_counter")}</span>
+          <ha-switch
+            .checked="${cfg.show_counter !== false}"
+            @change="${(e) => this._fireConfig({ ...this._config, show_counter: e.target.checked ? undefined : false })}"
           ></ha-switch>
         </div>
       </div>
