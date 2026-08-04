@@ -1,5 +1,5 @@
 /**
- * AlertTicker Card Editor v1.3.9.4
+ * AlertTicker Card Editor v1.3.9.5
  * Visual editor for the AlertTicker Card custom Lovelace component.
  */
 
@@ -10,7 +10,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 // Must match the version in alert-ticker-card.js
-const CARD_VERSION = "1.3.9.4";
+const CARD_VERSION = "1.3.9.5";
 
 // ---------------------------------------------------------------------------
 // Theme metadata — mirrors alert-ticker-card.js
@@ -889,6 +889,7 @@ const ET = {
     card_background: "Sfondo personalizzato / trasparenza",
     card_background_help: "Attiva per usare la variabile tema HA (--ha-card-background). Inserisci un valore CSS personalizzato per usare un colore fisso, es. rgba(0,0,0,0.5).",
     show_snooze_bar: "Mostra barra di riattivazione snooze 💤",
+    show_dismiss_bar: "Mostra barra di ripristino ignorati 🔕",
     show_snooze_button: "Mostra pulsante snooze 💤",
     show_history_button: "Mostra pulsante cronologia 📋",
     show_counter: "Mostra contatore avvisi (1/3)",
@@ -1107,6 +1108,7 @@ const ET = {
     action_url_path: "URL da aprire",
     action_assist: "Assistente vocale",
     action_dismiss: "Chiudi definitivamente",
+    action_undismiss: "Ripristina ignorati",
     action_pipeline_id: "Pipeline (vuoto = predefinita)",
     action_pipeline_id_help: "ID del pipeline vocale da usare. Lascia vuoto per usare quello predefinito.",
     action_start_listening: "Avvia ascolto",
@@ -1223,6 +1225,7 @@ const ET = {
     card_background: "Custom background / transparency",
     card_background_help: "Enable to use the HA theme variable (--ha-card-background). Enter a custom CSS value to use a fixed color, e.g. rgba(0,0,0,0.5).",
     show_snooze_bar: "Show snooze reactivation bar 💤",
+    show_dismiss_bar: "Show dismissed alerts bar 🔕",
     show_snooze_button: "Show snooze button 💤",
     show_history_button: "Show history button 📋",
     show_counter: "Show alert counter (1/3)",
@@ -1441,6 +1444,7 @@ const ET = {
     action_url_path: "URL to open",
     action_assist: "Assist",
     action_dismiss: "Dismiss",
+    action_undismiss: "Restore dismissed",
     action_pipeline_id: "Pipeline (empty = preferred)",
     action_pipeline_id_help: "Voice pipeline ID to use. Leave empty to use the preferred pipeline.",
     action_start_listening: "Start listening",
@@ -1557,6 +1561,7 @@ const ET = {
     card_background: "Arrière-plan personnalisé / transparence",
     card_background_help: "Activer pour utiliser la variable du thème HA (--ha-card-background). Entrez une valeur CSS pour une couleur fixe, ex. rgba(0,0,0,0.5).",
     show_snooze_bar: "Afficher la barre de réactivation snooze 💤",
+    show_dismiss_bar: "Afficher la barre des alertes ignorées 🔕",
     show_snooze_button: "Afficher le bouton snooze 💤",
     show_history_button: "Afficher le bouton historique 📋",
     show_counter: "Afficher le compteur d'alertes (1/3)",
@@ -1775,6 +1780,7 @@ const ET = {
     action_url_path: "URL à ouvrir",
     action_assist: "Assistant vocal",
     action_dismiss: "Ignorer définitivement",
+    action_undismiss: "Restaurer ignorées",
     action_pipeline_id: "Pipeline (vide = préféré)",
     action_pipeline_id_help: "ID du pipeline vocal à utiliser. Laisser vide pour utiliser le pipeline préféré.",
     action_start_listening: "Démarrer l'écoute",
@@ -1891,6 +1897,7 @@ const ET = {
     card_background: "Benutzerdefinierter Hintergrund / Transparenz",
     card_background_help: "Aktivieren, um die HA-Themenvariable (--ha-card-background) zu verwenden. CSS-Wert für feste Farbe eingeben, z.B. rgba(0,0,0,0.5).",
     show_snooze_bar: "Schlummern-Reaktivierungsleiste anzeigen 💤",
+    show_dismiss_bar: "Ignorierte Warnungsleiste anzeigen 🔕",
     show_snooze_button: "Schlummern-Schaltfläche anzeigen 💤",
     show_history_button: "Verlauf-Schaltfläche anzeigen 📋",
     show_counter: "Alarmzähler anzeigen (1/3)",
@@ -2109,6 +2116,7 @@ const ET = {
     action_url_path: "Zu öffnende URL",
     action_assist: "Assistent",
     action_dismiss: "Dauerhaft schließen",
+    action_undismiss: "Ignorierte wiederherstellen",
     action_pipeline_id: "Pipeline (leer = bevorzugt)",
     action_pipeline_id_help: "ID der Sprach-Pipeline. Leer lassen für die bevorzugte Pipeline.",
     action_start_listening: "Zuhören starten",
@@ -2225,6 +2233,7 @@ const ET = {
     card_background: "Aangepaste achtergrond / transparantie",
     card_background_help: "Inschakelen om de HA-themavariabele (--ha-card-background) te gebruiken. Voer een CSS-waarde in voor een vaste kleur, bijv. rgba(0,0,0,0.5).",
     show_snooze_bar: "Sluimer-reactiveringsbalk weergeven 💤",
+    show_dismiss_bar: "Genegeerde meldingenbalk weergeven 🔕",
     show_snooze_button: "Sluimerknop weergeven 💤",
     show_history_button: "Geschiedenisknop weergeven 📋",
     show_counter: "Meldingsteller weergeven (1/3)",
@@ -2443,6 +2452,7 @@ const ET = {
     action_url_path: "Te openen URL",
     action_assist: "Assistent",
     action_dismiss: "Definitief sluiten",
+    action_undismiss: "Genegeerde herstellen",
     action_pipeline_id: "Pipeline (leeg = voorkeur)",
     action_pipeline_id_help: "ID van de spraakpipeline. Leeg laten voor de standaard pipeline.",
     action_start_listening: "Begin met luisteren",
@@ -2559,6 +2569,7 @@ const ET = {
     card_background: "Nền tùy chỉnh / độ trong suốt",
     card_background_help: "Bật để dùng biến theme HA (--ha-card-background). Nhập giá trị CSS cho màu cố định, ví dụ rgba(0,0,0,0.5).",
     show_snooze_bar: "Hiển thị thanh kích hoạt lại tạm hoãn 💤",
+    show_dismiss_bar: "Hiển thị thanh cảnh báo đã bỏ qua 🔕",
     show_snooze_button: "Hiển thị nút tạm hoãn 💤",
     show_history_button: "Hiển thị nút lịch sử 📋",
     show_counter: "Hiển thị bộ đếm cảnh báo (1/3)",
@@ -2777,6 +2788,7 @@ const ET = {
     action_url_path: "URL cần mở",
     action_assist: "Trợ lý giọng nói",
     action_dismiss: "Bỏ qua vĩnh viễn",
+    action_undismiss: "Khôi phục bỏ qua",
     action_pipeline_id: "Pipeline (trống = mặc định)",
     action_pipeline_id_help: "ID pipeline giọng nói. Để trống để dùng pipeline mặc định.",
     action_start_listening: "Bắt đầu nghe",
@@ -2893,6 +2905,7 @@ const ET = {
     card_background: "Пользовательский фон / прозрачность",
     card_background_help: "Включите для использования переменной темы HA (--ha-card-background). Введите значение CSS для фиксированного цвета, напр. rgba(0,0,0,0.5).",
     show_snooze_bar: "Показывать полосу восстановления отложенных 💤",
+    show_dismiss_bar: "Показывать полосу отклонённых 🔕",
     show_snooze_button: "Показывать кнопку отложить 💤",
     show_history_button: "Показывать кнопку истории 📋",
     show_counter: "Показывать счётчик уведомлений (1/3)",
@@ -3111,6 +3124,7 @@ const ET = {
     action_url_path: "URL для открытия",
     action_assist: "Голосовой помощник",
     action_dismiss: "Закрыть навсегда",
+    action_undismiss: "Восстановить отклонённые",
     action_pipeline_id: "Pipeline (пусто = по умолчанию)",
     action_pipeline_id_help: "ID голосового pipeline. Оставьте пустым для использования pipeline по умолчанию.",
     action_start_listening: "Начать прослушивание",
@@ -3223,6 +3237,7 @@ const ET = {
     card_height: "Fast kort‑højde (px)",
     card_height_help: "Låser højden for at undgå layout‑skift, når advarsler ændres. Lad stå tom for automatisk højde.",
     show_snooze_bar: "Vis reaktiveringsbar for slumre 💤",
+    show_dismiss_bar: "Vis afvist advarselsbar 🔕",
     show_snooze_button: "Vis slumreknap 💤",
     show_history_button: "Vis historikknap 📋",
     show_counter: "Vis advarselstæller (1/3)",
@@ -3441,6 +3456,7 @@ const ET = {
     action_url_path: "URL der skal åbnes",
     action_assist: "Assistent",
     action_dismiss: "Afvis permanent",
+    action_undismiss: "Gendan afviste",
     action_pipeline_id: "Pipeline (tom = foretrukket)",
     action_pipeline_id_help: "ID på tale-pipeline. Lad feltet være tomt for at bruge den foretrukne pipeline.",
     action_start_listening: "Start lytning",
@@ -3561,6 +3577,7 @@ const ET = {
     card_background: "Vlastní pozadí / průhlednost",
     card_background_help: "Zapněte pro použití proměnné tématu HA (--ha-card-background). Zadejte CSS hodnotu pro pevnou barvu, např. rgba(0,0,0,0.5).",
     show_snooze_bar: "Zobrazit nástroj pro reaktivaci odložených varování 💤",
+    show_dismiss_bar: "Zobrazit nástroj zamítnutých varování 🔕",
     show_snooze_button: "Zobrazit tlačítko odložit 💤",
     show_history_button: "Zobrazit tlačítko historie 📋",
     show_counter: "Zobrazit počítadlo upozornění (1/3)",
@@ -3779,6 +3796,7 @@ const ET = {
     action_url_path: "URL k otevření",
     action_assist: "Hlasový asistent",
     action_dismiss: "Trvale zavřít",
+    action_undismiss: "Obnovit zamítnutá",
     action_pipeline_id: "Pipeline (prázdné = výchozí)",
     action_pipeline_id_help: "ID hlasového pipeline. Nechte prázdné pro použití výchozího pipeline.",
     action_start_listening: "Začít naslouchat",
@@ -3899,6 +3917,7 @@ const ET = {
     card_background: "Fundo personalizado / transparência",
     card_background_help: "Ativar para usar a variável do tema HA (--ha-card-background). Insira um valor CSS para cor fixa, ex. rgba(0,0,0,0.5).",
     show_snooze_bar: "Mostrar barra de reativação do silenciar 💤",
+    show_dismiss_bar: "Mostrar barra de alertas dispensados 🔕",
     show_snooze_button: "Mostrar botão de silenciar 💤",
     show_history_button: "Mostrar botão de histórico 📋",
     show_counter: "Mostrar contador de alertas (1/3)",
@@ -4117,6 +4136,7 @@ const ET = {
     action_url_path: "URL a abrir",
     action_assist: "Assistente de voz",
     action_dismiss: "Dispensar",
+    action_undismiss: "Restaurar dispensados",
     action_pipeline_id: "Pipeline (vazio = padrão)",
     action_pipeline_id_help: "ID do pipeline de voz. Deixe vazio para usar o pipeline padrão.",
     action_start_listening: "Iniciar escuta",
@@ -4233,6 +4253,7 @@ const ET = {
     card_background: "Fondo personalizado / transparencia",
     card_background_help: "Activar para usar la variable del tema HA (--ha-card-background). Introduce un valor CSS para color fijo, ej. rgba(0,0,0,0.5).",
     show_snooze_bar: "Mostrar barra de reactivación de posponer 💤",
+    show_dismiss_bar: "Mostrar barra de alertas descartadas 🔕",
     show_snooze_button: "Mostrar botón de posponer 💤",
     show_history_button: "Mostrar botón de historial 📋",
     show_counter: "Mostrar contador de alertas (1/3)",
@@ -4451,6 +4472,7 @@ const ET = {
     action_url_path: "URL a abrir",
     action_assist: "Asistente de voz",
     action_dismiss: "Descartar",
+    action_undismiss: "Restaurar descartadas",
     action_pipeline_id: "Pipeline (vacío = predeterminado)",
     action_pipeline_id_help: "ID del pipeline de voz. Dejar vacío para usar el predeterminado.",
     action_start_listening: "Iniciar escucha",
@@ -4567,6 +4589,7 @@ const ET = {
     card_background: "Özel arkaplan / şeffaflık",
     card_background_help: "HA tema değişkenini (--ha-card-background) kullanmak için etkinleştir. Sabit renk için özel CSS değeri gir, örn. rgba(0,0,0,0.5).",
     show_snooze_bar: "Erteleme yeniden etkinleştirme çubuğunu göster 💤",
+    show_dismiss_bar: "Reddedilen uyarı çubuğunu göster 🔕",
     show_snooze_button: "Erteleme düğmesini göster 💤",
     show_history_button: "Geçmiş düğmesini göster 📋",
     show_counter: "Uyarı sayacını göster (1/3)",
@@ -4785,6 +4808,7 @@ const ET = {
     action_url_path: "Açılacak URL",
     action_assist: "Sesli asistan",
     action_dismiss: "Kalıcı olarak kapat",
+    action_undismiss: "Reddedilenleri geri yükle",
     action_pipeline_id: "Pipeline (boş = tercih edilen)",
     action_pipeline_id_help: "Kullanılacak sesli pipeline ID'si. Tercih edilen pipeline için boş bırakın.",
     action_start_listening: "Dinlemeyi başlat",
@@ -5560,6 +5584,15 @@ class AlertTickerCardEditor extends LitElement {
           <ha-switch
             .checked="${cfg.show_counter !== false}"
             @change="${(e) => this._fireConfig({ ...this._config, show_counter: e.target.checked ? undefined : false })}"
+          ></ha-switch>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-row-inline">
+          <span>${this._t("show_dismiss_bar")}</span>
+          <ha-switch
+            .checked="${cfg.show_dismiss_bar !== false}"
+            @change="${(e) => this._fireConfig({ ...this._config, show_dismiss_bar: e.target.checked ? undefined : false })}"
           ></ha-switch>
         </div>
       </div>
@@ -7293,12 +7326,16 @@ class AlertTickerCardEditor extends LitElement {
   }
 
   // -------------------------------------------------------------------------
-  // Helper — true for timer.* entities AND device_class:timestamp sensors
+  // Helper — true for timer.* entities, device_class:timestamp sensors, and remaining-time sensors (unit s/min)
   // -------------------------------------------------------------------------
   _isTimerLike(entityId) {
     if (!entityId) return false;
     if (entityId.startsWith("timer.")) return true;
-    return this._hass?.states[entityId]?.attributes?.device_class === "timestamp";
+    const attrs = this._hass?.states[entityId]?.attributes;
+    if (!attrs) return false;
+    if (attrs.device_class === "timestamp") return true;
+    const uom = attrs.unit_of_measurement;
+    return uom === "s" || uom === "min";
   }
 
   // -------------------------------------------------------------------------
@@ -7310,6 +7347,8 @@ class AlertTickerCardEditor extends LitElement {
     const isTimer     = value && value.startsWith("timer.");
     const isTimestamp = value && !isTimer && this._hass?.states[value]?.attributes?.device_class === "timestamp";
     const isPct       = value && !isTimer && !isTimestamp && this._hass?.states[value]?.attributes?.unit_of_measurement === "%";
+    const _newUom     = value && !isTimer && !isTimestamp && !isPct && this._hass?.states[value]?.attributes?.unit_of_measurement;
+    const isRemaining = _newUom === "s" || _newUom === "min";
     const wasTimerLike = this._isTimerLike(alert.entity);
 
     // timer.* entity → auto-set state "active" and switch to first timer theme
@@ -7350,8 +7389,17 @@ class AlertTickerCardEditor extends LitElement {
       }
     }
 
+    // Remaining-time sensor (unit: s or min) — auto-switch to countdown theme
+    if (isRemaining) {
+      const prevThemeCat = (THEME_META[alert.theme] || {}).category;
+      if (prevThemeCat !== "timer") {
+        changes.theme = "countdown";
+        changes.icon = THEME_META.countdown.icon;
+      }
+    }
+
     // Leaving a timer-like entity → reset theme to emergency if it was a timer theme
-    if (!isTimer && !isTimestamp && !isPct && wasTimerLike) {
+    if (!isTimer && !isTimestamp && !isPct && !isRemaining && wasTimerLike) {
       const prevThemeCat = (THEME_META[alert.theme] || {}).category;
       if (prevThemeCat === "timer") {
         changes.theme = "emergency";
@@ -7613,7 +7661,7 @@ class AlertTickerCardEditor extends LitElement {
         <select class="native-select"
           @change="${(e) => this._setActionConfig(index, key, "action", e.target.value)}"
         >
-          ${["none","call-service","navigate","more-info","url","assist","dismiss"].map((t) => html`
+          ${["none","call-service","navigate","more-info","url","assist","dismiss","undismiss"].map((t) => html`
             <option value="${t}" ?selected="${type === t}">
               ${this._t("action_" + t.replace("-","_")) || t}
             </option>

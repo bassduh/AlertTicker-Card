@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9.5] - 2026-08-04
+
+### Added
+
+- **Timer themes support remaining-time sensors (`unit_of_measurement: "s"` or `"min"`)** ([#190](https://github.com/djdevil/AlertTicker-Card/issues/190)) — `countdown`, `hourglass`, `timer_pulse`, and `timer_ring` themes now work with sensors that report time remaining as a plain number (seconds or minutes), such as appliance remaining-time sensors. The card reads the numeric state, converts to seconds, tracks the first-observed value as the total duration, and calculates the progress bar fill from that baseline (identical to the `device_class: timestamp` approach). The time display shows `MM:SS` or `H:MM:SS`. When the sensor reaches 0, the timer shows as expired and the total resets so the next cycle starts fresh. In the visual editor, selecting a remaining-time sensor auto-suggests `countdown` as the default theme and shows only timer themes in the dropdown (same UX as `timer.*` entities).
+- **Dismiss bar — restore all dismissed alerts at once** ([#189](https://github.com/djdevil/AlertTicker-Card/issues/189)) — when all active alerts have been dismissed, an amber status bar now appears (mirroring the existing snooze bar) showing how many alerts are dismissed and offering a **Restore all** button that clears all dismissed states in one tap. The bar can be suppressed with `show_dismiss_bar: false`. A new `undismiss` action type is also available in any tap/hold/double-tap slot so you can bind the same reset to any alert or card area.
+
+---
+
 ## [1.3.9.4] - 2026-08-03
 
 ### Fixed
