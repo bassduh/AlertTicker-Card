@@ -1,5 +1,5 @@
 ﻿/**
- * AlertTicker Card v1.3.9.5
+ * AlertTicker Card v1.3.9.6
  * A Home Assistant custom Lovelace card to display alerts based on entity states.
  * Supports 50 visual themes with per-alert theme assignment, priority ordering,
  * fold animation cycling, snooze, numeric conditions, attribute triggers,
@@ -5410,8 +5410,12 @@ class AlertTickerCard extends LitElement {
             <span class="mu-np-label">${alert.badge_label || "NOW PLAYING"}</span>
           </div>
           <div class="mu-player-info">
-            <div class="mu-player-title">${title}</div>
-            ${artist ? html`<div class="mu-player-artist">${artist}</div>` : ""}
+            ${title.length > 22
+              ? html`<div class="mu-player-title mu-marquee-wrap"><span class="mu-marquee-inner" style="animation-duration:${Math.max(6, title.length * 0.28).toFixed(1)}s">${title}      ${title}</span></div>`
+              : html`<div class="mu-player-title">${title}</div>`}
+            ${artist ? (artist.length > 28
+              ? html`<div class="mu-player-artist mu-marquee-wrap"><span class="mu-marquee-inner" style="animation-duration:${Math.max(5, artist.length * 0.25).toFixed(1)}s">${artist}      ${artist}</span></div>`
+              : html`<div class="mu-player-artist">${artist}</div>`) : ""}
             ${(alert.entity_filter || alert.device_class) && alert.show_filter_name !== false
               ? html`<div class="mu-player-artist" style="opacity:0.6">${es.attributes.friendly_name || alert.entity}</div>`
               : ""}
@@ -8481,6 +8485,9 @@ class AlertTickerCard extends LitElement {
         font-size: 0.78rem; color: rgba(255,255,255,0.52); margin-top: 1px;
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       }
+      .mu-marquee-wrap { overflow: hidden; text-overflow: clip !important; }
+      .mu-marquee-inner { display: inline-block; white-space: nowrap; animation: mu-marquee linear infinite; }
+      @keyframes mu-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
       .mu-player-controls { display: flex; align-items: center; gap: 8px; margin-top: 7px; }
       .mu-ctrl-btn {
         background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);

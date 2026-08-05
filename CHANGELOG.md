@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9.6] - 2026-08-05
+
+### Added
+
+- **Music player — scrolling title and artist for long text** ([#191](https://github.com/djdevil/AlertTicker-Card/issues/191)) — when the media title exceeds 22 characters (or the artist name exceeds 28), the text now scrolls horizontally with a seamless marquee animation instead of being truncated with `…`. The scroll speed scales automatically with text length. Short titles and artist names remain static as before.
+
+---
+
 ## [1.3.9.5] - 2026-08-04
 
 ### Added
