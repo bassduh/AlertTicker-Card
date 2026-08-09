@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9.7] - 2026-08-09
+
+### Fixed
+
+- **Card not appearing on first load — requires multiple page refreshes** — the LitElement bootstrap at the top of the script resolved `ha-panel-lovelace`, `hui-view`, and `ha-card` synchronously at parse time. On a cold first load, HA may not yet have registered any of those custom elements, causing `Object.getPrototypeOf(undefined)` to throw a silent `TypeError` that aborted the entire script — leaving the card unregistered. On subsequent refreshes the elements are already in the browser's custom element registry and the script succeeds. Fixed by adding a guard before the bootstrap: if none of the target elements are defined yet, the script registers a `customElements.whenDefined("ha-card")` callback that re-injects the card script as a new `<script>` tag once HA is ready, then throws to cleanly abort the current (broken) execution.
+
+---
+
 ## [1.3.9.6] - 2026-08-05
 
 ### Added
