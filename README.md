@@ -3,7 +3,7 @@
 A custom Lovelace card to display alerts and notifications based on entity states. Supports **52 visual themes** (including 4 dedicated timer themes, 8 spectacular 3D themes, and 2 weather forecast themes), 12 transition animations, card interactions, entity filter, device class auto-discovery, **grouped alerts with expand/collapse**, alert history, snooze, secondary entity values, timer countdown, full Jinja2 template support, vertical layout, HA global theme adaptation, **global overlay/toast notifications visible from any dashboard view**, per-alert time windows, per-alert user visibility, manual alert navigation, animated weather/clock clear widget, **7-day weather forecast widget**, **media player mode with album art and playback controls**, **Text-to-Speech announcements** (standard TTS, Alexa, Google Home), **mobile push notifications**, **live camera snapshots in the overlay banner**, and a complete visual editor — all without writing a single line of YAML.
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
-[![Version](https://img.shields.io/badge/version-1.3.9.5-blue.svg)](https://github.com/djdevil/AlertTicker-Card)
+[![Version](https://img.shields.io/badge/version-1.3.9.7-blue.svg)](https://github.com/djdevil/AlertTicker-Card)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-yellow.svg?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/divil17f)
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=djdevil&repository=AlertTicker-Card&category=plugin)
@@ -1461,10 +1461,10 @@ TTS fallback messages (auto-generated when no `tts_message` is set) are availabl
 
 **TTS not playing**
 - Check that `tts_enabled` is not `false`. For standard TTS, ensure `tts_entity` is a valid `media_player.*`. For Alexa, set `tts_notify_service` to the correct `alexa_media_*` service name (visible in Developer Tools → Services). The TTS engine is auto-detected from the first `tts.*` state — if none is found, set `tts_engine` explicitly.
-- TTS (and push notifications) fired from the browser tab only work while the dashboard is open. To receive alerts when the browser is closed, the card automatically creates server-side HA automations (`[AlertTicker] TTS` and `[AlertTicker] Push Notifications`) via the REST API when the config is saved — check **Settings → Automations** to verify they exist.
+- TTS and push notifications are fired directly from the browser tab and only work while the dashboard is open. The card does **not** create any server-side automations. For 24/7 delivery (when the browser is closed), create a native HA automation that calls the same `notify.*` or `tts.speak` service.
 
 **Push notifications not arriving**
-- Verify `notify_push_enabled` is not `false`. Check that `notify_push_service` matches the service name exactly (without the `notify.` prefix). The card sends push via HA WebSocket when the dashboard is open; for 24/7 delivery, the auto-created `[AlertTicker] Push Notifications` automation in **Settings → Automations** must be present and enabled.
+- Verify `push_notify_enabled` is not `false`. Check that `push_notify_service` matches the service name exactly (e.g. `mobile_app_my_phone` — without the `notify.` prefix). The card sends push via the HA frontend API while the dashboard is open. For 24/7 delivery, create a native HA automation that calls the same `notify.*` service.
 
 **Camera image not appearing in overlay**
 - Verify the `camera_entity` entity exists and has an `entity_picture` attribute in Developer Tools → States. The image is loaded directly from the HA proxied URL — no extra authentication needed on the local network.
