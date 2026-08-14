@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9.8] - 2026-08-14
+
+### Added
+
+- **`use_entity_picture` — display entity picture as alert icon** ([#195](https://github.com/djdevil/AlertTicker-Card/issues/195)) — set `use_entity_picture: true` on any alert to replace the emoji/MDI icon with the entity's `entity_picture` attribute (the image HA shows in the state card). Useful for sensors that expose a picture — bin collection day, person location, camera thumbnails, etc. The image is fetched via the HA proxied URL and rendered as a small rounded square. `icon_size` controls the image dimensions (defaults to `2rem`). Available in the visual editor under the icon section.
+- **`icon_image` — static image path or URL as alert icon** — set `icon_image` to a `/local/` path or any full URL to use a custom image as the alert icon, without needing an entity that exposes `entity_picture`. Takes priority over `use_entity_picture` if both are set. `icon_size` controls the size (defaults to `2rem`). The size field appears automatically in the visual editor when `icon_image` or `use_entity_picture` is active.
+- **Music player — visibility toggles for compact dashboards** ([#194](https://github.com/djdevil/AlertTicker-Card/discussions/194)) — four new per-alert options let you show or hide individual parts of the music player UI. All default to `true` (visible); set any to `false` to hide: `music_show_art` (album artwork background and thumbnail), `music_show_title` (track title with marquee), `music_show_artist` (artist name), `music_show_controls` (previous / play-pause / next buttons). Useful when the music card is displayed on a small or narrow dashboard panel. All four toggles are available in the visual editor under the music player section.
+
+---
+
 ## [1.3.9.7] - 2026-08-09
 
 ### Fixed

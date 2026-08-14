@@ -3,7 +3,7 @@
 A custom Lovelace card to display alerts and notifications based on entity states. Supports **52 visual themes** (including 4 dedicated timer themes, 8 spectacular 3D themes, and 2 weather forecast themes), 12 transition animations, card interactions, entity filter, device class auto-discovery, **grouped alerts with expand/collapse**, alert history, snooze, secondary entity values, timer countdown, full Jinja2 template support, vertical layout, HA global theme adaptation, **global overlay/toast notifications visible from any dashboard view**, per-alert time windows, per-alert user visibility, manual alert navigation, animated weather/clock clear widget, **7-day weather forecast widget**, **media player mode with album art and playback controls**, **Text-to-Speech announcements** (standard TTS, Alexa, Google Home), **mobile push notifications**, **live camera snapshots in the overlay banner**, and a complete visual editor — all without writing a single line of YAML.
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
-[![Version](https://img.shields.io/badge/version-1.3.9.7-blue.svg)](https://github.com/djdevil/AlertTicker-Card)
+[![Version](https://img.shields.io/badge/version-1.3.9.8-blue.svg)](https://github.com/djdevil/AlertTicker-Card)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-yellow.svg?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/divil17f)
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=djdevil&repository=AlertTicker-Card&category=plugin)
@@ -79,6 +79,7 @@ A big thank you to **[SmartHomeJunkie](https://www.youtube.com/@SmartHomeJunkie)
 | **Alert history** | 📋 button flips the card to a timestamped event log |
 | **Timer themes** | 4 animated themes for `timer.*` entities with live countdown |
 | **HA icons** | Use any `mdi:` icon per alert via native icon picker |
+| **Entity picture / custom image** | Use the entity's `entity_picture` attribute or a static `/local/` path as the alert icon |
 | **Sound notifications** | Per-alert audio — auto-generated tones or custom URL |
 | **🔊 TTS announcements** | Read alerts aloud via HA TTS, Alexa, or any notify service. Multilingual fallback messages auto-generated from alert theme (12 languages) |
 | **📱 Push notifications** | Send a push notification to any `notify.*` service when an alert fires. Full Jinja2 support for title and message. Global master toggle. |
@@ -256,6 +257,10 @@ Switching back to a non-media-player entity reverts to `emergency`.
 |--------|------|---------|-------------|
 | `show_player_controls` | `boolean` | `false` | Enable the graphical player UI (requires `media_player.*` entity) |
 | `music_player_color` | `string` | `#e040fb` | Accent color for all player UI elements — any CSS color |
+| `music_show_art` | `boolean` | `true` | Show album artwork (background blur + thumbnail) |
+| `music_show_title` | `boolean` | `true` | Show track title (with marquee scroll for long titles) |
+| `music_show_artist` | `boolean` | `true` | Show artist name |
+| `music_show_controls` | `boolean` | `true` | Show previous / play-pause / next buttons |
 
 ---
 
@@ -798,6 +803,34 @@ Enable the `use_ha_icon` toggle per alert to use a native HA icon instead of an 
 
 Any icon namespace is accepted — not just `mdi:` and `hass:`. Icons from `hue:`, `phu:`, `cil:`, and any other custom set registered via `extra_module_url` work automatically.
 
+### Entity picture / custom image as icon *(new in 1.3.9.8)*
+
+Two new options let you use an image instead of an emoji or MDI icon.
+
+**`use_entity_picture`** — pulls the image HA shows for the entity (`entity_picture` attribute). Works with any entity that exposes a picture: bin/waste sensors, person trackers, camera thumbnails, weather entities, etc.
+
+```yaml
+alerts:
+  - entity: sensor.bin_collection
+    state: "on"
+    message: 🗑️ Bin day!
+    use_entity_picture: true
+    icon_size: 2rem   # optional, default 2rem
+```
+
+**`icon_image`** — point directly to any image by path or URL, without needing an entity with `entity_picture`. Takes priority over `use_entity_picture` if both are set.
+
+```yaml
+alerts:
+  - entity: binary_sensor.front_door
+    state: "on"
+    message: Porta aperta
+    icon_image: /local/immagini/porta.png
+    icon_size: 3rem
+```
+
+Both options render a small rounded square image. `icon_size` accepts any CSS length (`2rem`, `48px`, etc.) and its field appears automatically in the visual editor when either option is active.
+
 ### Message placeholders
 
 `{state}`, `{name}`, `{entity}`, and `{device}` work in the `message` field of **any** alert that has an entity set — not just `entity_filter` alerts:
@@ -1110,6 +1143,9 @@ The tab shows an **ON** badge when overlay mode is active.
 | `priority` | `number` | ❌ | 1–4 (default: `1`) |
 | `icon` | `string` | ❌ | Emoji or `mdi:` icon override |
 | `use_ha_icon` | `boolean` | ❌ | Use HA native icon (auto-read from entity, or pick via icon picker) |
+| `use_entity_picture` | `boolean` | ❌ | Use the entity's `entity_picture` attribute as the alert icon |
+| `icon_image` | `string` | ❌ | Static image path (`/local/…`) or full URL — takes priority over `use_entity_picture` |
+| `icon_size` | `string` | `2rem` | Size of the image icon — any CSS length (applies to `icon_image` and `use_entity_picture`) |
 | `icon_color` | `string` | ❌ | CSS color for the MDI icon (requires `use_ha_icon: true`) |
 | `show_badge` | `boolean` | `true` | Set `false` to hide the category badge |
 | `badge_label` | `string` | ❌ | Custom text for the category badge |
@@ -1132,6 +1168,10 @@ The tab shows an **ON** badge when overlay mode is active.
 | `notify_push_message` | `string` | ❌ | Notification body — same placeholders; falls back to `message` if empty |
 | `show_player_controls` | `boolean` | ❌ | Enable graphical music player UI for `media_player.*` entities (requires `theme: music`) |
 | `music_player_color` | `string` | ❌ | Accent color for the music player UI — any CSS color (default `#e040fb`) |
+| `music_show_art` | `boolean` | `true` | Show album artwork in the music player (background blur + thumbnail) |
+| `music_show_title` | `boolean` | `true` | Show track title (with marquee for long titles) |
+| `music_show_artist` | `boolean` | `true` | Show artist name |
+| `music_show_controls` | `boolean` | `true` | Show previous / play-pause / next buttons |
 | `camera_entity` | `string` | ❌ | Camera entity for overlay banner and card background |
 | `camera_live` | `boolean` | `false` | Show a live HLS/WebRTC stream in the overlay banner instead of a static snapshot (requires `camera_entity`) |
 | `camera_in_card` | `boolean` | `false` | Show the camera image as a background layer behind the alert card slide (requires `camera_entity`) |
