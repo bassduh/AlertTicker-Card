@@ -1,5 +1,5 @@
 ﻿/**
- * AlertTicker Card v1.3.9.8.2
+ * AlertTicker Card v1.3.9.8.3
  * A Home Assistant custom Lovelace card to display alerts based on entity states.
  * Supports 50 visual themes with per-alert theme assignment, priority ordering,
  * fold animation cycling, snooze, numeric conditions, attribute triggers,
@@ -41,7 +41,7 @@ const css = LitElement.prototype.css ?? ((strings, ...values) => {
 // ---------------------------------------------------------------------------
 // Card version — declared early so getConfigElement() can reference it
 // ---------------------------------------------------------------------------
-const CARD_VERSION = "1.3.9.8.2";
+const CARD_VERSION = "1.3.9.8.3";
 
 // ---------------------------------------------------------------------------
 // Google Cast compatibility (#171)
@@ -5443,7 +5443,7 @@ class AlertTickerCard extends LitElement {
     const _showArtist   = alert.music_show_artist   !== false;
     const _showControls = alert.music_show_controls !== false;
     return html`
-      <div class="at-music at-music--player" style="--mu-accent:${accent}">
+      <div class="at-music at-music--player${!_showArt ? ' at-music--no-art' : ''}" style="--mu-accent:${accent}">
         ${(_showArt && artUrl) ? html`<div class="mu-art-bg" style="background-image:url('${artUrl}')"></div>` : ""}
         <div class="mu-art-overlay"></div>
         <div class="mu-player-body">
@@ -8543,6 +8543,10 @@ class AlertTickerCard extends LitElement {
       .mu-marquee-inner { display: inline-block; white-space: nowrap; animation: mu-marquee linear infinite; }
       @keyframes mu-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
       .mu-player-controls { display: flex; align-items: center; gap: 8px; margin-top: 7px; }
+      .at-music--no-art .mu-player-body { padding-right: 8px; }
+      .at-music--no-art .mu-player-right { padding: 8px 10px 8px 0; }
+      .at-music--no-art .mu-player-controls { width: 100%; }
+      .at-music--no-art .mu-vol-slider { min-width: 80px; }
       .mu-ctrl-btn {
         background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
         border-radius: 50%; width: 34px; height: 34px; cursor: pointer;

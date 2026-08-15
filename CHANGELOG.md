@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9.8.3] - 2026-08-15
+
+### Fixed
+
+- **Music player — blank space on the right when album art is hidden** ([#194](https://github.com/djdevil/AlertTicker-Card/discussions/194)) — when `music_show_art: false`, the area previously occupied by the album art thumbnail left dead space to the right of the volume slider. Fixed by adding the `at-music--no-art` modifier class which expands the player body, tightens the right counter padding, and forces the controls row to fill the full available width.
+
+---
+
 ## [1.3.9.8.2] - 2026-08-15
 
 ### Fixed
