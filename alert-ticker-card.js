@@ -1,5 +1,5 @@
 ﻿/**
- * AlertTicker Card v1.3.9.8
+ * AlertTicker Card v1.3.9.8.1
  * A Home Assistant custom Lovelace card to display alerts based on entity states.
  * Supports 50 visual themes with per-alert theme assignment, priority ordering,
  * fold animation cycling, snooze, numeric conditions, attribute triggers,
@@ -41,7 +41,7 @@ const css = LitElement.prototype.css ?? ((strings, ...values) => {
 // ---------------------------------------------------------------------------
 // Card version — declared early so getConfigElement() can reference it
 // ---------------------------------------------------------------------------
-const CARD_VERSION = "1.3.9.8";
+const CARD_VERSION = "1.3.9.8.1";
 
 // ---------------------------------------------------------------------------
 // Google Cast compatibility (#171)
@@ -4306,6 +4306,12 @@ class AlertTickerCard extends LitElement {
     this.shadowRoot?.querySelectorAll(".atc-ha-icon").forEach(el => {
       el.parentElement?.classList.add("atc-has-mdi-icon");
     });
+    // Auto-flip snooze menu upward when it would overflow the viewport bottom
+    const snoozeMenu = this.shadowRoot?.querySelector(".atc-snooze-menu");
+    if (snoozeMenu) {
+      const rect = snoozeMenu.getBoundingClientRect();
+      snoozeMenu.classList.toggle("atc-snooze-menu-up", rect.bottom > window.innerHeight - 8);
+    }
   }
 
   // ---- Helpers -------------------------------------------------------------
@@ -8699,6 +8705,10 @@ class AlertTickerCard extends LitElement {
         gap: 3px;
         min-width: 110px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      }
+      .atc-snooze-menu-up {
+        top: auto;
+        bottom: 32px;
       }
       .atc-snooze-label {
         font-size: 0.65rem;

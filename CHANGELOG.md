@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9.8.1] - 2026-08-15
+
+### Fixed
+
+- **Snooze menu clipped when card is in dashboard footer** ([#197](https://github.com/djdevil/AlertTicker-Card/issues/197)) — the snooze duration menu now auto-detects its position relative to the viewport: when the card is placed near the bottom of the screen (footer, wall panel, small display), the menu automatically opens upward instead of downward. No configuration needed.
+
+---
+
 ## [1.3.9.8] - 2026-08-14
 
 ### Added
