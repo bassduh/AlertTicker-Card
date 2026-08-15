@@ -1,5 +1,5 @@
 ﻿/**
- * AlertTicker Card v1.3.9.8.1
+ * AlertTicker Card v1.3.9.8.2
  * A Home Assistant custom Lovelace card to display alerts based on entity states.
  * Supports 50 visual themes with per-alert theme assignment, priority ordering,
  * fold animation cycling, snooze, numeric conditions, attribute triggers,
@@ -41,7 +41,7 @@ const css = LitElement.prototype.css ?? ((strings, ...values) => {
 // ---------------------------------------------------------------------------
 // Card version — declared early so getConfigElement() can reference it
 // ---------------------------------------------------------------------------
-const CARD_VERSION = "1.3.9.8.1";
+const CARD_VERSION = "1.3.9.8.2";
 
 // ---------------------------------------------------------------------------
 // Google Cast compatibility (#171)
@@ -3644,7 +3644,20 @@ class AlertTickerCard extends LitElement {
   _toggleSnoozeMenu(alert) {
     const key = this._snoozeKey(alert);
     this._snoozeMenuOpen = this._snoozeMenuOpen === key ? null : key;
-    if (this._snoozeMenuOpen) this._bindSnoozeOutsideClick();
+    if (this._snoozeMenuOpen) {
+      this._bindSnoozeOutsideClick();
+      this._positionSnoozeMenu();
+    }
+  }
+
+  /** Flip snooze menu upward if it would overflow the viewport bottom (runs once after render) */
+  _positionSnoozeMenu() {
+    this.updateComplete.then(() => {
+      const menu = this.shadowRoot?.querySelector(".atc-snooze-menu");
+      if (!menu) return;
+      const rect = menu.getBoundingClientRect();
+      menu.classList.toggle("atc-snooze-menu-up", rect.bottom > window.innerHeight - 8);
+    });
   }
 
   /** Close snooze menu when user taps/clicks anywhere outside it */
@@ -3766,7 +3779,7 @@ class AlertTickerCard extends LitElement {
             @click="${(e) => {
               e.stopPropagation();
               this._snoozeMenuOpen = this._snoozeMenuOpen === alert._groupKey ? null : alert._groupKey;
-              if (this._snoozeMenuOpen) this._bindSnoozeOutsideClick();
+              if (this._snoozeMenuOpen) { this._bindSnoozeOutsideClick(); this._positionSnoozeMenu(); }
               this.requestUpdate();
             }}"
           >💤</button>
@@ -4306,12 +4319,6 @@ class AlertTickerCard extends LitElement {
     this.shadowRoot?.querySelectorAll(".atc-ha-icon").forEach(el => {
       el.parentElement?.classList.add("atc-has-mdi-icon");
     });
-    // Auto-flip snooze menu upward when it would overflow the viewport bottom
-    const snoozeMenu = this.shadowRoot?.querySelector(".atc-snooze-menu");
-    if (snoozeMenu) {
-      const rect = snoozeMenu.getBoundingClientRect();
-      snoozeMenu.classList.toggle("atc-snooze-menu-up", rect.bottom > window.innerHeight - 8);
-    }
   }
 
   // ---- Helpers -------------------------------------------------------------

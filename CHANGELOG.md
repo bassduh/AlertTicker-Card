@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.9.8.2] - 2026-08-15
+
+### Fixed
+
+- **Snooze menu flickering up/down when card is in the footer** ([#197](https://github.com/djdevil/AlertTicker-Card/issues/197)) — the position check introduced in v1.3.9.8.1 ran inside `updated()`, causing a render loop: adding the flip class triggered a new `updated()` call which rechecked the position and removed the class — cycling infinitely. Fixed by moving the check to `updateComplete.then()` inside `_toggleSnoozeMenu()` so it runs once after the menu is rendered and applies the class via direct DOM manipulation (which does not trigger a reactive re-render).
+
+---
+
 ## [1.3.9.8.1] - 2026-08-15
 
 ### Fixed
